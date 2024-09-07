@@ -106,15 +106,23 @@ function userInput(e) {
   }
 }
 
-button.addEventListener("click", (e) => {
-  if (e.target.id === "allclear") clearAll();
-  if (e.target.className === "number btn") userInput(e);
-  if (e.target.className === "operator arth") addOperator(e);
-  if (e.target.id === "percent") percentage();
-  if (e.target.id === "sign") changeSign();
-  if (e.target.id === "backspace") backspace();
-  if (e.target.id === "decim") decimal();
-});
+function sumValue() {
+  operate(mathOperator, operandOne, operandTwo);
+  sum = sum.toString();
+  checkSumDecimal = sum.split("");
+  if (sum.length > 10) {
+    if (checkSumDecimal.includes(".")) {
+      sum = parseFloat(checkSumDecimal.join(""));
+      display.textContent = sum.toFixed(8);
+    } else {
+      sum = parseFloat(sum);
+      sum = sum.toExponential(4);
+      display.textContent = sum;
+    }
+  } else {
+    display.textContent = sum;
+  }
+}
 
 function operate(operator, num1, num2) {
   switch (operator) {
@@ -133,21 +141,12 @@ function operate(operator, num1, num2) {
 }
 
 button.addEventListener("click", (e) => {
-  if (e.target.id == "equals") {
-    operate(mathOperator, operandOne, operandTwo);
-    sum = sum.toString();
-    checkSumDecimal = sum.split("");
-    if (sum.length > 10) {
-      if (checkSumDecimal.includes(".")) {
-        sum = parseFloat(checkSumDecimal.join(""));
-        display.textContent = sum.toFixed(8);
-      } else {
-        sum = parseFloat(sum);
-        sum = sum.toExponential(4);
-        display.textContent = sum;
-      }
-    } else {
-      display.textContent = sum;
-    }
-  }
+  if (e.target.id === "allclear") clearAll();
+  if (e.target.className === "number btn") userInput(e);
+  if (e.target.className === "operator arth") addOperator(e);
+  if (e.target.id === "percent") percentage();
+  if (e.target.id === "sign") changeSign();
+  if (e.target.id === "backspace") backspace();
+  if (e.target.id === "decim") decimal();
+  if (e.target.id === "equals") sumValue();
 });

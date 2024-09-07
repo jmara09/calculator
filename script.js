@@ -10,6 +10,7 @@ function clearAll() {
   operandTwo = "";
   mathOperator = "";
   display.textContent = "";
+  display.classList.add("one");
 }
 
 function percentage() {
@@ -84,23 +85,22 @@ function decimal() {
   }
 }
 
-function userInput(e) {
-  if (e.target.className == "operator arth" && operandOne == "") {
-    return;
-  } else if (e.target.className == "operator arth") {
+function addOperator(e) {
+  if (operandOne != "") {
     mathOperator = e.target.id;
+    display.classList.remove("one");
   }
+}
 
-  if (mathOperator == "") {
-    if (e.target.className === "number btn" && operandOne.length != 10) {
-      display.classList.add("one");
-      operandOne += e.target.innerText;
+function userInput(e) {
+  if (display.className === "display one") {
+    if (operandOne.length != 10) {
+      operandOne += e.target.textContent;
       display.textContent = `${operandOne}`;
     }
-  } else if (mathOperator != "") {
-    if (e.target.className === "number btn" && operandTwo.length != 10) {
-      display.classList.remove("one");
-      operandTwo += e.target.innerText;
+  } else {
+    if (operandTwo.length != 10) {
+      operandTwo += e.target.textContent;
       display.textContent = `${operandTwo}`;
     }
   }
@@ -108,13 +108,13 @@ function userInput(e) {
 
 button.addEventListener("click", (e) => {
   if (e.target.id === "allclear") clearAll();
+  if (e.target.className === "number btn") userInput(e);
+  if (e.target.className === "operator arth") addOperator(e);
   if (e.target.id === "percent") percentage();
   if (e.target.id === "sign") changeSign();
   if (e.target.id === "backspace") backspace();
   if (e.target.id === "decim") decimal();
 });
-
-button.addEventListener("click", userInput);
 
 function operate(operator, num1, num2) {
   switch (operator) {

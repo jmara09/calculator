@@ -11,6 +11,7 @@ function clearAll() {
   mathOperator = "";
   display.textContent = "";
   display.classList.add("one");
+  display.style.cssText = "font-size: 80px";
 }
 
 function percentage() {

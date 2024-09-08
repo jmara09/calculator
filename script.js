@@ -114,10 +114,12 @@ function totalValue() {
   checkSumDecimal = total.split("");
   if (total.length > 10) {
     if (checkSumDecimal.includes(".")) {
-      total = parseFloat(checkSumDecimal.join(""));
-      display.textContent = total.toFixed(5);
+      total = checkSumDecimal.join("");
+      display.style.cssText = "font-size: 40px; align-items: flex-end;";
+      total = parseFloat(total);
+      display.textContent = total.toFixed(6);
     } else {
-      total = parseFloat(sum);
+      total = parseFloat(total);
       total = total.toExponential(4);
       display.textContent = total;
     }

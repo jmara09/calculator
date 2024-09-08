@@ -3,7 +3,7 @@ const display = document.querySelector(".display");
 let operandOne = "";
 let operandTwo = "";
 let mathOperator = "";
-let sum = 0;
+let total = 0;
 
 function clearAll() {
   operandOne = "";
@@ -50,6 +50,8 @@ function changeSign() {
 }
 
 function backspace() {
+  if (operandOne.length == 1 || operandTwo.length == 1) clearAll();
+
   if (display.className === "display one") {
     operandOne = operandOne.split("");
     operandOne.splice(operandOne.length - 1, 1);
@@ -86,7 +88,7 @@ function decimal() {
 }
 
 function addOperator(e) {
-  if (operandOne != "") {
+  if (operandOne.length != 0) {
     mathOperator = e.target.id;
     display.classList.remove("one");
   }
@@ -106,39 +108,48 @@ function userInput(e) {
   }
 }
 
-function sumValue() {
+function totalValue() {
   operate(mathOperator, operandOne, operandTwo);
-  sum = sum.toString();
-  checkSumDecimal = sum.split("");
-  if (sum.length > 10) {
+  total = total.toString();
+  checkSumDecimal = total.split("");
+  if (total.length > 10) {
     if (checkSumDecimal.includes(".")) {
-      sum = parseFloat(checkSumDecimal.join(""));
-      display.textContent = sum.toFixed(8);
+      total = parseFloat(checkSumDecimal.join(""));
+      display.textContent = total.toFixed(5);
     } else {
-      sum = parseFloat(sum);
-      sum = sum.toExponential(4);
-      display.textContent = sum;
+      total = parseFloat(sum);
+      total = total.toExponential(4);
+      display.textContent = total;
     }
   } else {
-    display.textContent = sum;
+    display.textContent = total;
   }
 }
 
 function operate(operator, num1, num2) {
   switch (operator) {
     case "add":
-      sum = parseFloat(num1) + parseFloat(num2);
+      total = parseFloat(num1) + parseFloat(num2);
       break;
     case "minus":
-      sum = parseFloat(num1) - parseFloat(num2);
+      total = parseFloat(num1) - parseFloat(num2);
       break;
     case "multiply":
-      sum = parseFloat(num1) * parseFloat(num2);
+      total = parseFloat(num1) * parseFloat(num2);
       break;
     case "division":
-      sum = num2 == 0 ? "lull" : parseFloat(num1) / parseFloat(num2);
+      total = num2 == 0 ? "lull" : parseFloat(num1) / parseFloat(num2);
   }
 }
+
+document.addEventListener("keydown", (e) => {
+  const numpad = document.querySelector(`[data-code=${e.code}]`);
+  const numAll = Array.from(document.querySelectorAll(`[data-code]`));
+  numAll.forEach((item) => {
+    let attri = item.getAttribute("data-code");
+    if (e.code === attri) numpad.click();
+  });
+});
 
 button.addEventListener("click", (e) => {
   if (e.target.id === "allclear") clearAll();
@@ -148,5 +159,5 @@ button.addEventListener("click", (e) => {
   if (e.target.id === "sign") changeSign();
   if (e.target.id === "backspace") backspace();
   if (e.target.id === "decim") decimal();
-  if (e.target.id === "equals") sumValue();
+  if (e.target.id === "equals") totalValue();
 });
